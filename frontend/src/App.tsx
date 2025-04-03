@@ -21,7 +21,6 @@ function App() {
       setGreeting(result.message)
     } catch (err) {
       setError('APIの呼び出しに失敗しました。BFFサーバーが起動していることを確認してください。')
-      console.error(err)
     } finally {
       setLoading(false)
     }

@@ -1,0 +1,16 @@
+syntax = "proto3";
+package posting;
+
+service Posting {
+    rpc createPost (PostingRequest) returns (PostingResponse);
+}
+
+message PostingRequest {
+    string title = 1;
+    string message = 2;
+}
+
+message PostingResponse {
+    string title = 1;
+    string message = 2;
+}

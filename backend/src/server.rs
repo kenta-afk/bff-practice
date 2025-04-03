@@ -1,20 +1,24 @@
-use tonic::{Request, Response};
-use tonic::transport::Server;
-use crate::hello_world::greeter_server::{Greeter, GreeterServer};
-use crate::hello_world::{HelloRequest, HelloResponse};
+use tonic::{transport::Server, Request, Response, Status};
 
-pub mod hello_world {
+pub mod helloworld {
     tonic::include_proto!("helloworld");
 }
+use helloworld::greeter_server::{Greeter, GreeterServer};
+use helloworld::{HelloRequest, HelloResponse};
 
-#[derive(Default)]
+#[derive(Debug, Default)]
 pub struct MyGreeter {}
 
 #[tonic::async_trait]
 impl Greeter for MyGreeter {
-    async fn say_hello(&self, request: Request<HelloRequest>) -> Result<Response<HelloResponse>, tonic::Status> {
-        let reply = hello_world::HelloResponse {
-            message: format!("Hello {} from server Side",request.into_inner().name)
+    async fn say_hello(
+        &self,
+        request: Request<HelloRequest>,
+    ) -> Result<Response<HelloResponse>, Status> {
+        println!("Got a request: {:?}", request);
+
+        let reply = HelloResponse {
+            message: format!("Hello {}!", request.into_inner().name),
         };
 
         Ok(Response::new(reply))
@@ -23,14 +27,15 @@ impl Greeter for MyGreeter {
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let address = "[::1]:50051".parse()?;
-    let greeter_service = MyGreeter::default();
-    
-    println!("listening...");
+    let addr = "0.0.0.0:50051".parse()?;
+    let greeter = MyGreeter::default();
+
+    println!("gRPC サーバーを起動中...");
 
     Server::builder()
-        .add_service(GreeterServer::new(greeter_service))
-        .serve(address)
+        .add_service(GreeterServer::new(greeter))
+        .serve(addr)
         .await?;
+
     Ok(())
 }

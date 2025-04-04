@@ -2,7 +2,7 @@ syntax = "proto3";
 package posting;
 
 service Posting {
-    rpc craetePost (PostingRequest) returns (PostingResponse);
+    rpc createPost (PostingRequest) returns (PostingResponse);
 }
 
 message PostingRequest {

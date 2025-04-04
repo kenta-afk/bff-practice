@@ -1,8 +1,11 @@
+import { create } from 'domain';
 import { createGreeterClient, GreeterClient } from './clients/greeter-client';
+import { createPostingClient, PostingClient } from './clients/posting-client';
 // import { createUserClient, UserClient } from './clients/user-client';
 
 export interface GrpcClients {
     greeter: GreeterClient;
+    posting: PostingClient;
     // user: UserClient; 
 }
 
@@ -14,6 +17,7 @@ export interface GrpcClients {
 export function createGrpcClients(serverAddress: string): GrpcClients {
     return {
         greeter: createGreeterClient(serverAddress),
+        posting: createPostingClient(serverAddress), 
         // user: createUserClient(serverAddress), // 将来的に追加する可能性のあるクライアント
     };
 }

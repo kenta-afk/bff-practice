@@ -6,7 +6,7 @@ const app = express();
 app.use(express.json());
 
 // gRPCサーバーのアドレスを設定
-const grpcServerAddr = process.env.GRPC_SERVER_ADDR || 'backend:50051';
+const grpcServerAddr ='backend:50051';
 
 // すべてのgRPCクライアントを作成
 const grpcClients = createGrpcClients(grpcServerAddr);
@@ -31,8 +31,18 @@ app.post('/api/hello', async (req, res) => {
     }
 });
 
-// サーバー起動
-const port = process.env.PORT || 3000;
+app.post('/api/posting', async (req, res) => {
+    try {
+        const { title, message } = req.body;
+        const result = await grpcClients.posting.createPost({ title, message });
+        res.json(result);
+    } catch (error) {
+        console.error('Error calling gRPC service:', error);
+        res.status(500).json({ error: 'Failed to call gRPC service' });
+    }
+});
+
+const port = 3000;
 app.listen(port, () => {
     console.log(`BFF server running at http://localhost:${port}`);
     console.log(`Connected to gRPC server at ${grpcServerAddr}`);

@@ -28,7 +28,6 @@ export function createGreeterClient(address: string): GreeterClient {
             return new Promise((resolve, reject) => {
                 client.sayHello(request, (err: Error | null, response: HelloResponse) => {
                     if (err) {
-                        console.error('gRPC error in sayHello:', err);
                         reject(err);
                     } else {
                         resolve(response);

@@ -1,0 +1,14 @@
+syntax = "proto3";
+package omikuji;
+
+service Omikuji {
+    rpc GetOmikujiResult (OmikujiRequest) returns (OmikujiResponse);
+}
+
+message OmikujiRequest {
+
+}
+
+message OmikujiResponse {
+    string result = 1;
+}

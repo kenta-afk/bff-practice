@@ -16,5 +16,12 @@ export {
     type PostingRequest,
     type PostingResponse
 } from './clients/posting-client';
+
+export {
+    createOmikujiClient,
+    type OmikujiClient,
+    type OmikujiRequest,
+    type OmikujiResponse
+} from './clients/omikuji-client';
 // 将来的に追加する可能性のある他のクライアントもここでエクスポート
 // export { createUserClient, type UserClient } from './clients/user-client';

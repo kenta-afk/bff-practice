@@ -7,6 +7,7 @@ const HomePage = () => {
             <Title title="Home Page" description="This is the home page of our application." />
             <PageButton to="/greeter" label="Greeter" />
             <PageButton to="/posting" label="Posting" variant="secondary" />
+            <PageButton to="/omikuji" label="Omikuji" variant="secondary" />
         </div>
     );
 }

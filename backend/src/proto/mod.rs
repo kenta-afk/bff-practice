@@ -5,3 +5,7 @@ pub mod helloworld {
 pub mod posting {
     tonic::include_proto!("posting");
 }
+
+pub mod omikuji {
+    tonic::include_proto!("omikuji");
+}

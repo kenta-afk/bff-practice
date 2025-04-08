@@ -19,7 +19,7 @@ app.use((req, res, next) => {
     next();
 });
 
-// Hello APIエンドポイント
+
 app.post('/api/hello', async (req, res) => {
     try {
         const { name } = req.body;
@@ -41,6 +41,16 @@ app.post('/api/posting', async (req, res) => {
         res.status(500).json({ error: 'Failed to call gRPC service' });
     }
 });
+
+app.post('/api/omikuji', async (req, res) => {
+    try {
+        const result = await grpcClients.omikuji.GetOmikujiResult({});
+        res.json(result);
+    } catch (error) {
+        console.error('Error calling gRPC service:', error);
+        res.status(500).json({ error: 'Failed to call gRPC service' });
+    }
+})
 
 const port = 3000;
 app.listen(port, () => {

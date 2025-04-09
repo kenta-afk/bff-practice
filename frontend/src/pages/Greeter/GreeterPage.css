@@ -1,0 +1,71 @@
+.greeter-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.greeter-form-container {
+    width: 100%;
+    max-width: 400px;
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.greeter-form-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.greeter-form-container label {
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+
+.greeter-form-container input {
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #444;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: inherit;
+    font-size: 1rem;
+}
+
+.greeter-form-container button {
+    margin-top: 1rem;
+    padding: 10px 16px;
+    border-radius: 4px;
+    background-color: #646cff;
+    color: white;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.greeter-form-container button:hover:not(:disabled) {
+    background-color: #747bff;
+}
+
+.greeter-form-container button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* メディアクエリでライトモード対応 */
+@media (prefers-color-scheme: light) {
+    .greeter-form-container {
+        background-color: rgba(0, 0, 0, 0.03);
+    }
+
+    .greeter-form-container input {
+        border-color: #ddd;
+        background-color: white;
+    }
+}

@@ -1,11 +1,25 @@
 import { useState } from 'react';
-import { sayHello } from '../../services/greeter';
+import { useLazyQuery, gql } from '@apollo/client';
+
+const GET_GREETING = gql`
+  query GetGreeting($name: String) {
+    greeting(name: $name)
+  }
+`;
 
 const GreeterForm = () => {
     const [name, setName] = useState('');
-    const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [message, setMessage] = useState<string | null>(null);
+    
+    const [getGreeting, { loading }] = useLazyQuery(GET_GREETING, {
+        onCompleted: (data) => {
+            setMessage(data.greeting);
+        },
+        onError: (error) => {
+            setError(error.message);
+        }
+    });
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -15,20 +29,11 @@ const GreeterForm = () => {
             return;
         }
 
-        setLoading(true);
         setError(null);
 
-        try {
-            const response = await sayHello(name);
-            setMessage(response.message);
-        } catch (err) {
-            const errorMessage = err instanceof Error ?
-                err.message: 'An unknown error occurred';
-            setError(errorMessage);
-        } finally {
-            setLoading(false);
-        }
+        getGreeting({ variables: { name } });
     }
+
     return (
         <div>
             <form onSubmit={handleSubmit} >
@@ -53,4 +58,5 @@ const GreeterForm = () => {
         </div>
     )
 }
+
 export default GreeterForm;

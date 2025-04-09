@@ -1,5 +1,5 @@
 import { greeterResolvers } from './greeter';
-import { GraphQLResolveInfo } from 'graphql';
+import { postingResolvers } from './posting';
 
 const mergeResolvers = (resolvers: any[]) => {
     return resolvers.reduce((result, resolver) => {
@@ -17,4 +17,5 @@ const mergeResolvers = (resolvers: any[]) => {
 
 export const resolvers = mergeResolvers([
     greeterResolvers,
+    postingResolvers,
 ]);

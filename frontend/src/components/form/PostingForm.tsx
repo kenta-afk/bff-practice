@@ -13,11 +13,13 @@ const GET_POSTING = gql`
 const PostingForm = () => {
     const [title, setTitle] = useState("");
     const [message, setMessage] = useState("");
+    const [response, setResponse] = useState("");
     const [error, setError] = useState<string | null>(null);
 
     const [getPosting, { loading }] = useLazyQuery(GET_POSTING, {
             onCompleted: (data) => {
-                setMessage(data.posting);
+            const parsedData = JSON.parse(data.posting);
+            setResponse(parsedData);
             },
             onError: (error) => {
                 setError(error.message);
@@ -65,8 +67,8 @@ const PostingForm = () => {
                     {loading ? 'Loading...' : 'Create Post'}
                 </button>
                 {error && <p style={{ color: 'red' }}>{error}</p>}
-                {message && <p style={{ color: 'green' }}>Post title: {message.title}</p>}
-                {message && <p style={{ color: 'green' }}>Post message: {message.message}</p>}
+                {response && <p style={{ color: 'green' }}>Post title: {response.title}</p>}
+                {response && <p style={{ color: 'green' }}>Post message: {response.message}</p>}
             </form>
         </div>
     )

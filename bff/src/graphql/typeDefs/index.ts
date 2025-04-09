@@ -1,6 +1,7 @@
 import { greeterTypeDefs } from './greeter';
+import { postingTypeDefs } from './posting';
 
 export const typeDefs = [
     greeterTypeDefs,
-    // 他の型定義もここに追加していきます
+    postingTypeDefs,
 ];

@@ -10,11 +10,12 @@ const GET_GREETING = gql`
 const GreeterForm = () => {
     const [name, setName] = useState('');
     const [error, setError] = useState<string | null>(null);
-    const [message, setMessage] = useState<string | null>(null);
-    
+    const [response, setResponse] = useState<string | null>(null);
+
     const [getGreeting, { loading }] = useLazyQuery(GET_GREETING, {
         onCompleted: (data) => {
-            setMessage(data.greeting);
+            const parsedData = JSON.parse(data.greeting);
+            setResponse(parsedData);
         },
         onError: (error) => {
             setError(error.message);
@@ -53,7 +54,7 @@ const GreeterForm = () => {
                     {loading ? 'Loading...' : 'Say Hello'}
                 </button>
                 {error && <p style={{ color: 'red' }}>{error}</p>}
-                {message && <p style={{ color: 'green' }}>{message}</p>}
+                {response && <p style={{ color: 'green' }}>Message: {response.message}</p>}
             </form>
         </div>
     )

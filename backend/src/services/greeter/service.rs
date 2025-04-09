@@ -11,9 +11,10 @@ impl Greeter for GreeterService {
         &self,
         request: Request<HelloRequest>,
     ) -> Result<Response<HelloResponse>, Status> {
+        let req = request.into_inner();
 
         let reply = HelloResponse {
-            message: format!("Hello {}!", request.into_inner().name),
+            message: req.name,
         };
 
         Ok(Response::new(reply))

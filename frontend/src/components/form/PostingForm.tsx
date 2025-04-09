@@ -1,70 +1,75 @@
-// import { useState } from "react";
+import { useState } from "react";
+import { useLazyQuery, gql } from '@apollo/client';
 
+const GET_POSTING = gql`
+  query GetPosting($title: String, $message: String) {
+    posting(
+        title: $title, 
+        message: $message
+    )
+  }
+`;
 
-// const PostingForm = () => {
-//     const [title, setTitle] = useState("");
-//     const [message, setMessage] = useState("");
-//     const [response, setResponse] = useState<{ title: string; message: string } | null>(null);
-//     const [loading, setLoading] = useState(false);
-//     const [error, setError] = useState<string | null>(null);
+const PostingForm = () => {
+    const [title, setTitle] = useState("");
+    const [message, setMessage] = useState("");
+    const [error, setError] = useState<string | null>(null);
 
-//     const handleSubmit = async (e: React.FormEvent) => {
-//         e.preventDefault();
+    const [getPosting, { loading }] = useLazyQuery(GET_POSTING, {
+            onCompleted: (data) => {
+                setMessage(data.posting);
+            },
+            onError: (error) => {
+                setError(error.message);
+            }
+        });
 
-//         if (!title || !message) {
-//             setError("Title and message are required");
-//             return;
-//         }
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
 
-//         setLoading(true);
-//         setError(null);
-//         setResponse(null);
+        if (!title || !message) {
+            setError("Title and message are required");
+            return;
+        }
 
-//         try {
-//             const response = await createPost(title, message);
-//             setResponse(response);
-//         } catch (err) {
-//             const errorMessage = err instanceof Error ?
-//                 err.message : 'An unknown error occurred';
-//             setError(errorMessage);
-//         } finally {
-//             setLoading(false);
-//         }
-//     }
+        setError(null);
 
-//     return (
-//         <div>
-//             <form onSubmit={handleSubmit}>
-//                 <label>Title</label>
-//                 <input
-//                     id="title"
-//                     type="text"
-//                     value={title}
-//                     onChange={(e) => setTitle(e.target.value)}
-//                     placeholder="Enter title"
-//                     disabled={loading}
-//                 />
-//                 <label>Message</label>
-//                 <input
-//                     id="message"
-//                     type="text"
-//                     value={message}
-//                     onChange={(e) => setMessage(e.target.value)}
-//                     placeholder="Enter message"
-//                     disabled={loading}
-//                 />
-//                 <button
-//                     type="submit"
-//                     disabled={loading}
-//                 >
-//                     {loading ? 'Loading...' : 'Create Post'}
-//                 </button>
-//                 {error && <p style={{ color: 'red' }}>{error}</p>}
-//                 {response && <p style={{ color: 'green' }}>Post title: {response.title}</p>}
-//                 {response && <p style={{ color: 'green' }}>Post message: {response.message}</p>}
-//             </form>
-//         </div>
-//     )
-// }
+        getPosting({ variables: { title, message }})
+    }
 
-// export default PostingForm;
+    return (
+        <div>
+            <form onSubmit={handleSubmit}>
+                <label>Title</label>
+                <input
+                    id="title"
+                    type="text"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder="Enter title"
+                    disabled={loading}
+                />
+                <label>Message</label>
+                <input
+                    id="message"
+                    type="text"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder="Enter message"
+                    disabled={loading}
+                />
+                <button
+                    type="submit"
+                    disabled={loading}
+                >
+                    {loading ? 'Loading...' : 'Create Post'}
+                </button>
+                {error && <p style={{ color: 'red' }}>{error}</p>}
+                {message && <p style={{ color: 'green' }}>Post title: {message.title}</p>}
+                {message && <p style={{ color: 'green' }}>Post message: {message.message}</p>}
+            </form>
+        </div>
+    )
+}
+
+export default PostingForm;

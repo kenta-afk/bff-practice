@@ -1,7 +1,6 @@
 import * as grpc from '@grpc/grpc-js';
 import { loadProto } from '../proto-loader';
 
-// Greeterサービスのリクエスト/レスポンス型定義
 export interface HelloRequest {
     name: string;
 }
@@ -14,7 +13,6 @@ export interface GreeterClient {
     sayHello(request: HelloRequest): Promise<HelloResponse>;
 }
 
-// Greeterクライアントを作成する関数
 export function createGreeterClient(address: string): GreeterClient {
     
     const proto = loadProto('helloworld');
